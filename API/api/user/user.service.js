@@ -120,6 +120,43 @@ module.exports = {
                 return callback(null, results);
             }
         );
-    }
+    },
+    
+    fetchAndMarkPrintedUsers: (callback) => {
+    const selectQuery = `
+        SELECT irid, firstname, lastname, cardcolour
+        FROM Users
+        WHERE isprinted = false
+    `;
+    const updateQuery = `
+        UPDATE Users
+        SET isprinted = true
+        WHERE isprinted = false
+    `;
+
+    // Step 1: Fetch unprinted users
+    pool.query(selectQuery, [], (selectErr, selectResult) => {
+        if (selectErr) {
+            console.error("Select error:", selectErr);
+            return callback(selectErr);
+        }
+
+        if (selectResult.length === 0) {
+            // No unprinted users found
+            return callback(null, []);
+        }
+
+        // Step 2: Mark them as printed
+        pool.query(updateQuery, [], (updateErr) => {
+            if (updateErr) {
+                console.error("Update error:", updateErr);
+                return callback(updateErr);
+            }
+
+            return callback(null, selectResult); // Return original users
+        });
+    });
+}
+
 }
 

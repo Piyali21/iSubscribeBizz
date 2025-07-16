@@ -3,7 +3,8 @@ const {
     getUsersbyIrid,
     getUsers, 
     updateUser, 
-    deleteUser
+    deleteUser,
+    fetchAndMarkPrintedUsers
 } = require('./user.service');
 
 
@@ -112,5 +113,28 @@ module.exports = {
                 message: "Deleted successfully"
             });
         });
-    }
+    },
+    getUnprintedUsers: (req, res) => {
+    fetchAndMarkPrintedUsers((err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: 0,
+                message: "Database connection error"
+            });
+        }
+        if (!results || results.length === 0) {
+            return res.status(404).json({
+                success: 0,
+                message: "No unprinted users found"
+            });
+        }
+        return res.status(200).json({
+            success: 1,
+            message: "Fetched and marked users as printed",
+            data: results
+        });
+    });
+}
+
 }

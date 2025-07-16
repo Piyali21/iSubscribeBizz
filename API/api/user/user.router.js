@@ -3,7 +3,8 @@ const {
     getUsers, 
     getUsersbyIrid, 
     updateUser, 
-    deleteUser 
+    deleteUser,
+    getUnprintedUsers
 } = require('./user.controller');
 const router = require('express').Router();
 
@@ -12,5 +13,6 @@ router.get('/GetAllUsers', getUsers);
 router.get('/getUserbyIrid/:irid', getUsersbyIrid);
 router.patch('/updateUser', updateUser);
 router.delete('/deleteUser', deleteUser);
+router.get('/getUnprintedUsers', getUnprintedUsers);
 
 module.exports = router;
