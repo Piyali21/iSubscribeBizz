@@ -128,13 +128,6 @@ module.exports = {
         FROM Users
         WHERE isprinted = false
     `;
-    const updateQuery = `
-        UPDATE Users
-        SET isprinted = true
-        WHERE isprinted = false
-    `;
-
-    // Step 1: Fetch unprinted users
     pool.query(selectQuery, [], (selectErr, selectResult) => {
         if (selectErr) {
             console.error("Select error:", selectErr);
@@ -142,21 +135,32 @@ module.exports = {
         }
 
         if (selectResult.length === 0) {
-            // No unprinted users found
             return callback(null, []);
         }
 
-        // Step 2: Mark them as printed
-        pool.query(updateQuery, [], (updateErr) => {
+        // Use the modular update function
+        module.exports.markUsersAsPrinted((updateErr) => {
             if (updateErr) {
-                console.error("Update error:", updateErr);
                 return callback(updateErr);
             }
-
-            return callback(null, selectResult); // Return original users
+            return callback(null, selectResult);
         });
     });
+},
+markUsersAsPrinted: (callback) => {
+    const updateQuery = `
+        UPDATE Users
+        SET isprinted = true
+        WHERE isprinted = false
+    `;
+    pool.query(updateQuery, [], (error, result) => {
+        if (error) {
+            console.error("Update error:", error);
+            return callback(error);
+        }
+        return callback(null, result);
+    });
+}
 }
 
-}
 

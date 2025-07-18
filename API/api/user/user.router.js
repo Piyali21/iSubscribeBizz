@@ -4,7 +4,8 @@ const {
     getUsersbyIrid, 
     updateUser, 
     deleteUser,
-    getUnprintedUsers
+    getUnprintedUsers,
+    updateUserMarkAsPrinted
 } = require('./user.controller');
 const router = require('express').Router();
 
@@ -14,5 +15,6 @@ router.get('/getUserbyIrid/:irid', getUsersbyIrid);
 router.patch('/updateUser', updateUser);
 router.delete('/deleteUser', deleteUser);
 router.get('/getUnprintedUsers', getUnprintedUsers);
+router.patch('/updateUserMarkAsPrinted', updateUserMarkAsPrinted);
 
 module.exports = router;
