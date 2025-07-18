@@ -137,14 +137,6 @@ module.exports = {
         if (selectResult.length === 0) {
             return callback(null, []);
         }
-
-        // Use the modular update function
-        module.exports.markUsersAsPrinted((updateErr) => {
-            if (updateErr) {
-                return callback(updateErr);
-            }
-            return callback(null, selectResult);
-        });
     });
 },
 markUsersAsPrinted: (callback) => {
