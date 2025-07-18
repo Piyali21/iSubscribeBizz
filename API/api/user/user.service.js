@@ -124,7 +124,7 @@ module.exports = {
     
     fetchAndMarkPrintedUsers: (callback) => {
     const selectQuery = `
-        SELECT irid, firstname, lastname, cardcolour
+        SELECT irid, firstname, lastname, cardcolour, subscriptionstartdate, subscriptionenddate
         FROM Users
         WHERE isprinted = false
     `;
